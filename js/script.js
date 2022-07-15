@@ -47,7 +47,7 @@ function showDate() {
     date_time.textContent = currentDate;
 }
 
-function getTimeOfDay(){
+function getTimeOfDay() {
     const date = new Date();
     const hours = date.getHours();
     let welcomeText = 'night';
@@ -99,7 +99,7 @@ window.addEventListener('load', getLocalStorage)
 // });
 
 
-function getRandomNum(){
+function getRandomNum() {
     const min = 1;
     const max = 20;
     return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
@@ -107,13 +107,13 @@ function getRandomNum(){
 
 let randomNum = getRandomNum();
 
-function setBg(){
+function setBg() {
     // let bgNum = randomNum.toString().padStart(2,'0');
     const img = new Image();
-    img.src = "https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay +"/" + randomNum.toString().padStart(2,'0') + ".jpg";
+    img.src = "https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay + "/" + randomNum.toString().padStart(2, '0') + ".jpg";
 
     img.onload = () => {
-        body.style.backgroundImage = body.style.backgroundImage = "url('" + img.src+ "')";
+        body.style.backgroundImage = body.style.backgroundImage = "url('" + img.src + "')";
     };
 
     // body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay +"/" + bgNum + ".jpg')";
@@ -121,19 +121,52 @@ function setBg(){
 
 setBg();
 
-function getSlideNext(){
+function getSlideNext() {
     randomNum++;
     randomNum > 20 ? randomNum = 1 : randomNum;
     setBg();
     // body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay +"/" + randomNum.toString().padStart(2,'0') + ".jpg')";
 }
 
-function getSlidePrev(){
+function getSlidePrev() {
     randomNum--;
     randomNum < 1 ? randomNum = 20 : randomNum;
     setBg();
     // body.style.backgroundImage = "url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay +"/" + randomNum.toString().padStart(2,'0') + ".jpg')";
 }
 
-slideNext.addEventListener('click',  getSlideNext);
+slideNext.addEventListener('click', getSlideNext);
 slidePrev.addEventListener('click', getSlidePrev);
+
+
+// Погода
+
+const weatherIcon = document.querySelector('.weather-icon');
+const temperature = document.querySelector('.temperature');
+const weatherDescription = document.querySelector('.weather-description');
+
+// .weather[0].id - id иконки погоды
+// .weather[0].description - описание погоды
+// .main.temp - температура
+
+const city = document.querySelector('.city');
+city.addEventListener('change', () => {
+    // console.log(city.value);
+    getWeather();
+})
+
+async function getWeather(newSity) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=en&appid=9cdada7fb28c4dfbf39ead2d36a2b20b&units=metric`;
+    const res = await fetch(url);
+    const data = await res.json();
+    // console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
+
+    weatherIcon.className = 'weather-icon owf';
+
+    weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+    temperature.textContent = `${data.main.temp}°C`;
+    weatherDescription.textContent = data.weather[0].description;
+
+    // weatherIcon.className = 'weather-icon owf';
+}
+getWeather();
