@@ -33,6 +33,14 @@ const humidity = document.querySelector('.humidity');
 
 
 
+const quotesQuote = document.querySelector('.quote');
+const quotesAuthor = document.querySelector('.author');
+const quotesButton = document.querySelector('.change-quote');
+//Quotes
+//quote
+//author
+
+
 // console.log(time);
 // time.textContent = "Text"; // отобразить внутри элемента текст, используется метод textContent
 //
@@ -212,3 +220,45 @@ getWeather();
 // changeQuote.addEventListener('click', function() {
 //     console.log(nameUser.value);
 // });
+
+const max = 100
+const min = 1;
+let count = Math.floor(Math.random() * (max - min)) + min;
+let maxCount = 0;
+
+async function getQuotes(lang) {
+
+    const quotes = lang === 'ru' ? '../assets/json/quotes.json' : 'https://type.fit/api/quotes';
+    const res = await fetch(quotes);
+    // const res = await fetch(quotes);
+    // const data = await res.json();
+    return await res.json();
+}
+
+// getQuotes();
+
+async function goGetQuotes(i,lang){
+    const data = await getQuotes(lang);
+    maxCount = data.length;
+
+    setTimeout(() => {
+        quotesQuote.textContent = data[i].text;
+        quotesAuthor.textContent = data[i].author;
+    }, 500);
+
+    maxCount >= count ? count++ : count = 0;
+}
+
+
+
+
+goGetQuotes(count,lang);
+
+
+if (quotesButton) {
+
+    quotesButton.addEventListener("click", function (e) {
+        goGetQuotes(count,lang);
+    });
+
+}
