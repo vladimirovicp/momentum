@@ -262,3 +262,20 @@ if (quotesButton) {
     });
 
 }
+
+
+
+// Audio
+
+const audio = document.querySelector('audio');
+const playBtn = document.querySelector('.play');
+
+function playAudio() {
+    audio.currentTime = 0;
+    audio.play();
+}
+function pauseAudio() {
+    audio.pause();
+}
+
+playBtn.addEventListener('click', playAudio);
