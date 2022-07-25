@@ -1,3 +1,5 @@
+
+
 const time = document.querySelector('.time');
 const date_time = document.querySelector('.date');
 const greeting = document.querySelector('.greeting');
@@ -267,15 +269,86 @@ if (quotesButton) {
 
 // Audio
 
-const audio = document.querySelector('audio');
+// const audio = document.querySelector('audio');
+// const playBtn = document.querySelector('.play');
+//
+// function playAudio() {
+//     audio.currentTime = 0;
+//     audio.play();
+// }
+// function pauseAudio() {
+//     audio.pause();
+// }
+//
+// playBtn.addEventListener('click', playAudio);
+
+import playList from './playList.js';
+console.log(playList);
+
+
+let isPlay = false;
+let playNum = 0;
+
+const audio = new Audio();
 const playBtn = document.querySelector('.play');
 
+const playPrevBtn = document.querySelector('.play-prev');
+const playNextBtn = document.querySelector('.play-next');
+
+const playListContainer = document.querySelector('.play-list');
+
 function playAudio() {
-    audio.currentTime = 0;
-    audio.play();
-}
-function pauseAudio() {
-    audio.pause();
+    // playBtn.classList.toggle("pause");
+
+    console.log(playNum);
+    if(!isPlay){
+        isPlay = true;
+        // audio.src = "../assets/sounds/Ennio Morricone.mp3";
+        audio.src = playList[playNum].src;
+        audio.currentTime = 0;
+        audio.play();
+        playBtn.classList.add("pause");
+    } else{
+        isPlay = false;
+        audio.pause();
+        playBtn.classList.remove("pause");
+    }
 }
 
 playBtn.addEventListener('click', playAudio);
+
+function playNext(){
+    playNum < playList.length - 1 ? playNum++ : playNum=0;
+    isPlay = false;
+
+    // playListContainer[playNum].classList.add('item-active');
+    // item-active
+    playAudio();
+}
+
+function playPrev(){
+    playNum <= 0 ? playNum = playList.length - 1 : playNum--;
+    isPlay = false;
+    playAudio();
+}
+
+
+playPrevBtn.addEventListener('click', playPrev);
+playNextBtn.addEventListener('click', playNext);
+
+
+    // for (let i = 0; i < playList.length; i++){
+    //     const li = document.createElement('li');
+    //     li.classList.add('play-item');
+    //     li.textContent = playList[i].title;
+    //     playListContainer.append(li);
+    // }
+
+    playList.forEach(el => {
+        const li = document.createElement('li');
+        li.classList.add('play-item');
+        li.textContent = el.title;
+        playListContainer.append(li);
+    })
+
+
