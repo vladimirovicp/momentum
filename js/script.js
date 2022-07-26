@@ -308,6 +308,13 @@ function playAudio() {
         audio.currentTime = 0;
         audio.play();
         playBtn.classList.add("pause");
+
+        let elements = playListContainer.querySelectorAll('li');
+        for (let elem of elements) {
+            elem.classList.remove('item-active');
+        }
+        elements[playNum].classList.add('item-active');
+
     } else{
         isPlay = false;
         audio.pause();
