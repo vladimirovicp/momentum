@@ -1,14 +1,10 @@
-
+import i18Obj from './translate.js';
 
 const time = document.querySelector('.time');
 const date_time = document.querySelector('.date');
 const greeting = document.querySelector('.greeting');
 let nameUser = document.querySelector('.name');
 const body = document.querySelector('body');
-
-let lang = 'ru';
-
-
 
 const changeQuote = document.querySelector('.change-quote');
 
@@ -38,19 +34,64 @@ const humidity = document.querySelector('.humidity');
 const quotesQuote = document.querySelector('.quote');
 const quotesAuthor = document.querySelector('.author');
 const quotesButton = document.querySelector('.change-quote');
-//Quotes
-//quote
-//author
 
 
-// console.log(time);
-// time.textContent = "Text"; // отобразить внутри элемента текст, используется метод textContent
+// language
+
+// let lang = 'ru';
+
+// function getLocalStorageLang() {
+//     let lang = localStorage.getItem('lang');
+//     if(lang === null){
+//         getTranslate('en');
 //
-// const date = new Date();
-// console.log(date);
+//     } else {
+//         getTranslate(lang);
+//     }
+// }
+
+// window.addEventListener('load', getLocalStorage);
+
+// let lang = 'ru';
+ let lang = localStorage.getItem('lang');
+
+ console.log(localStorage.getItem('lang'));
+
+// if(lang === null){
+//     getTranslate('en');
+// } else {
+//     getTranslate(lang);
+// }
+
+
+
+/* Translate */
+
+let currentlanguage = document.querySelector('.language');
+
+currentlanguage.addEventListener('click', (e) => {
+    // getTranslate(e.target.innerText);
+    localStorage.setItem('lang',e.target.innerText);
+    lang = e.target.innerText;
+
+    currentlanguage.querySelectorAll('li a').forEach(el => {
+        el.classList.toggle('active');
+    })
+
+    // localStorage.setItem('lang', lang);
+    // console.log(localStorage.getItem('lang'));
+
+});
+
+// function getTranslate(language) {
+//     const i18 = document.querySelectorAll('[data-i18]');
+//     i18.forEach((value) => {
+//         const text = value.dataset.i18;
+//         value.textContent = i18Obj[language][text];
+//     });
+// }
+
 //
-// const currentTime = date.toLocaleTimeString();
-// console.log(currentTime);
 
 function showLangFormatTime() {
     let showTimeLang;
@@ -132,6 +173,7 @@ showTime();
 function setLocalStorage() {
     localStorage.setItem('name', nameUser.value);
     localStorage.setItem('city', city.value);
+    localStorage.setItem('lang', lang);
 }
 window.addEventListener('beforeunload', setLocalStorage);
 
@@ -144,6 +186,17 @@ function getLocalStorage() {
     if (localStorage.getItem('city')) {
         city.value = localStorage.getItem('city');
     }
+
+    lang = localStorage.getItem('lang');
+
+    // if (lang === null) {
+    //     getTranslate('en');
+    //
+    // } else {
+    //     getTranslate(lang);
+    // }
+
+
 }
 window.addEventListener('load', getLocalStorage)
 
@@ -357,5 +410,10 @@ playNextBtn.addEventListener('click', playNext);
         li.textContent = el.title;
         playListContainer.append(li);
     })
+
+
+
+
+
 
 
