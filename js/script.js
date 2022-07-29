@@ -3,6 +3,7 @@ import i18Obj from './translate.js';
 const time = document.querySelector('.time');
 const date_time = document.querySelector('.date');
 const greeting = document.querySelector('.greeting');
+const greetingContainer = document.querySelector('.greeting-container');
 let nameUser = document.querySelector('.name');
 const body = document.querySelector('body');
 
@@ -16,6 +17,8 @@ const slidePrev = document.querySelector('.slide-prev');
 let timeOfDay;
 
 const city = document.querySelector('.city');
+
+
 city.addEventListener('change', () => {
     getWeather();
 });
@@ -40,7 +43,8 @@ if(lang === 'ru'){
 } else {
     dateOptions = { month: 'long', day: 'numeric', weekday: 'long'};
 }
-const timeOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+
+const timeOptions = { hour: 'numeric', hour12: false, minute: 'numeric', second: 'numeric'};
 // const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
 
 function showLangFormatTime() {
@@ -50,14 +54,12 @@ function showLangFormatTime() {
             showTimeLang = 'ru-RU';
             break;
         default:
-            showTimeLang = 'en-En';
+            showTimeLang = 'en-US';
     }
     return showTimeLang;
 }
 
 function showTime() {
-
-
     const date = new Date();
     const currentTime = date.toLocaleTimeString(showLangFormatTime(), timeOptions);
     time.textContent = currentTime;
@@ -111,18 +113,24 @@ function showGreeting() {
             default:
                 welcomeText = '';
         }
-
         greeting.textContent = welcomeText;
-
     } else {
         greeting.textContent = `Good ${getTimeOfDay()}`;
     }
-    // greeting.textContent = `Good ${getTimeOfDay()}`;
-    // greeting.textContent = welcomeText;
 }
 
 showTime();
 
+
+// console.log(greetingContainer.querySelector('input').placeholder);
+//
+// // console.log(greeting.attr('placeholder')
+
+function greetingPlaceholder(lang){
+    greetingContainer.querySelector('input').placeholder = lang === 'ru' ? '[Введите имя]' : '[Enter name]';
+}
+
+greetingPlaceholder(lang);
 
 // перед перезагрузкой или закрытием страницы (событие beforeunload) данные нужно сохранить
 function setLocalStorage() {
@@ -193,20 +201,34 @@ const weatherDescription = document.querySelector('.weather-description');
 // .weather[0].description - описание погоды
 // .main.temp - температура
 
-async function getWeather(newSity) {
+async function getWeather() {
+
+
+
+    if (city.value === '') {
+        city.value = 'Минск';
+    }
+
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=${lang}&appid=9cdada7fb28c4dfbf39ead2d36a2b20b&units=metric`;
     const res = await fetch(url);
     const data = await res.json();
 
-    weatherIcon.className = 'weather-icon owf';
-    weatherIcon.classList.add(`owf-${data.weather[0].id}`); //иконка погоды
-    temperature.textContent = `${data.main.temp}°C`; //температуру в °C
-    weatherDescription.textContent = data.weather[0].description; //описание погоды
 
-    if (lang === 'ru') {
-        wind.textContent = `Скорость ветра: ${data.wind.speed} м/с`; //скорость ветра в м/с
-        humidity.textContent = `Относительная влажность воздуха: ${data.main.humidity} %`; // относительную влажность воздуха в %
-    }
+        weatherIcon.className = 'weather-icon owf';
+        weatherIcon.classList.add(`owf-${data.weather[0].id}`); //иконка погоды
+        temperature.textContent = `${Math.trunc(data.main.temp)}°C`; //температуру в °C
+        weatherDescription.textContent = data.weather[0].description; //описание погоды
+
+        if (lang === 'ru') {
+            wind.textContent = `Скор. ветра: ${Math.trunc(data.wind.speed)}м/с`; //скорость ветра в м/с
+            humidity.textContent = `Влаж. воздуха: ${Math.trunc(data.main.humidity)}%`; // относительную влажность воздуха в %
+        } else{
+            wind.textContent = ` Wind speed: ${Math.trunc(data.wind.speed)}м/с`; //скорость ветра в м/с
+            humidity.textContent = `Humidity: ${Math.trunc(data.main.humidity)}%`; // относительную влажность воздуха в %
+        }
+
+
+
 }
 getWeather();
 
@@ -310,14 +332,29 @@ playNextBtn.addEventListener('click', playNext);
 /* Translate */
 
 let currentlanguage = document.querySelector('.language');
-currentlanguage.addEventListener('click', (e) => {
+const listLanguage = currentlanguage.querySelectorAll('li a');
 
+
+if( lang === 'en'){
+    listLanguage.forEach(el => {
+        if(el.classList.contains('active')){
+            el.classList.remove('active');
+        } else{
+            el.classList.add('active');
+        }
+    });
+}
+
+
+
+currentlanguage.addEventListener('click', (e) => {
     lang = e.target.innerText;
     currentlanguage.querySelectorAll('li a').forEach(el => {
         el.classList.toggle('active');
     });
     getWeather();
-
+    greetingPlaceholder(lang);
+    goGetQuotes(count,lang);
 });
 
 

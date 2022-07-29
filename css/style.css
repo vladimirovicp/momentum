@@ -9,8 +9,12 @@
   padding: 0;
 }
 
+button{
+  transition: color .5s;
+}
+
 body {
-  min-width: 480px;
+  min-width: 300px;
   min-height: 100vh;
   font-family: 'Arial', sans-serif;
   font-size: 16px;
@@ -265,6 +269,8 @@ body {
   min-height: 20px;
 }
 
+
+
 @media (max-width: 768px) {
   .time {
     min-height: 80px;
@@ -283,5 +289,47 @@ body {
   .name {
     font-size: 32px;
     padding: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header{
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+
+  .greeting-container{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .name{
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .time{
+    font-size: 48px;
+  }
+
+  .footer{
+    height: auto;
+    padding: 0 0 20px;
+  }
+
+  /*.quote{*/
+  /*  width: 80%;*/
+  /*  margin: 0 auto;*/
+  /*}*/
+
+  /*.author{*/
+  /*  width: 80%;*/
+  /*  margin: 0 auto;*/
+  /*}*/
+
+  .quote-author{
+    /*display: flex;*/
+    /*flex-direction: column;*/
   }
 }
