@@ -41,7 +41,8 @@ body {
   align-items: center;
   justify-content: space-between;
   width: 120px;
-  margin-bottom: 28px;
+  /*margin-bottom: 28px;*/
+  margin: 0 auto 14px;
 }
 
 .play-list {
@@ -110,6 +111,41 @@ body {
   background-size: 40px 40px;
   background-image: url("../assets/svg/play.svg");
 }
+
+.player .player-time .divider{
+  padding: 2px;
+}
+
+.player-time{
+  display: flex;
+  margin-top: 24px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+
+
+.player-timeline{
+  flex: 10;
+  position: relative;
+  display: flex;
+  flex-basis: 100%;
+  transition: height 0.3s;
+  background: rgba(200, 200, 200, 0.5);
+  cursor: ew-resize;
+  height: 15px;
+  margin-bottom: 15px;
+}
+
+.player-progress{
+  width: 100%;
+  background-color: #ffc600;
+  flex: 0;
+  flex-basis: 0%;
+}
+
+
+
 
 .pause {
   background-image: url("../assets/svg/pause.svg");

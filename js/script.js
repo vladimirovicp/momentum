@@ -201,13 +201,18 @@ const weatherDescription = document.querySelector('.weather-description');
 // .weather[0].description - описание погоды
 // .main.temp - температура
 
+
+function defaultCity(){
+    if (city.value === '') {
+        city.value = lang === 'ru' ? 'Минск' : 'Minsk';
+    } else if(city.value === 'Минск' || city.value === 'Minsk'){
+        city.value = lang === 'ru' ? 'Минск' : 'Minsk';
+    }
+}
+
 async function getWeather() {
 
-
-
-    if (city.value === '') {
-        city.value = 'Минск';
-    }
+    defaultCity();
 
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=${lang}&appid=9cdada7fb28c4dfbf39ead2d36a2b20b&units=metric`;
     const res = await fetch(url);
@@ -268,25 +273,32 @@ if (quotesButton) {
 // Audio
 
 import playList from './playList.js';
-console.log(playList);
+// console.log(playList);
 
 let isPlay = false;
 let playNum = 0;
 
 const audio = new Audio();
 const playBtn = document.querySelector('.play');
-
 const playPrevBtn = document.querySelector('.play-prev');
 const playNextBtn = document.querySelector('.play-next');
-
 const playListContainer = document.querySelector('.play-list');
 
+const playerTimeline = document.querySelector(".player-timeline");
+
+const playerCurrent = document.querySelector(".player-current");
+const playerLength = document.querySelector(".player-length");
+
+const progressBar = document.querySelector('.player-progress');
+let currentTime = 0;
+
 function playAudio() {
-    console.log(playNum);
+    // console.log(playNum);
     if(!isPlay){
         isPlay = true;
         audio.src = playList[playNum].src;
-        audio.currentTime = 0;
+        audio.currentTime = currentTime;
+
         audio.play();
         playBtn.classList.add("pause");
 
@@ -296,10 +308,14 @@ function playAudio() {
         }
         elements[playNum].classList.add('item-active');
 
+        // playerCurrent.textContent = audio.currentTime;
+        playerLength.textContent = playList[playNum].duration;
+
     } else{
         isPlay = false;
         audio.pause();
         playBtn.classList.remove("pause");
+        currentTime = audio.currentTime;
     }
 }
 
@@ -308,12 +324,14 @@ playBtn.addEventListener('click', playAudio);
 function playNext(){
     playNum < playList.length - 1 ? playNum++ : playNum=0;
     isPlay = false;
+    currentTime = 0;
     playAudio();
 }
 
 function playPrev(){
     playNum <= 0 ? playNum = playList.length - 1 : playNum--;
     isPlay = false;
+    currentTime = 0;
     playAudio();
 }
 
@@ -327,6 +345,60 @@ playNextBtn.addEventListener('click', playNext);
         li.textContent = el.title;
         playListContainer.append(li);
     })
+
+
+// обрабатываем прогресс
+function handleAudioProgress() {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progressBar.style.flexBasis = `${percent}%`;
+}
+
+function initializeAudio() {
+    const audioDuration = Math.round(Audio.duration);
+    const time = formatTime(audioDuration);
+
+    playerLength.innerText = `${time.minutes}:${time.seconds}`;
+    playerLength.setAttribute('datetime', `${time.minutes}m ${time.seconds}s`)
+}
+
+
+function formatTime(timeInSeconds) {
+    const result = new Date(timeInSeconds * 1000).toISOString().substring(11, 19);
+    return {
+        minutes: result.substring(3, 5),
+        seconds: result.substring(6, 8),
+    };
+};
+
+
+// //слушаем событие обновление времени
+audio.addEventListener('timeupdate', handleAudioProgress);
+
+//обновим время, прошедшее с момента
+function updateTimePlayerElapsed() {
+    const time = formatTime(Math.round(audio.currentTime));
+    playerCurrent.textContent = `${time.minutes}:${time.seconds}`;
+
+    if( audio.currentTime === audio.duration){
+        playNum < playList.length - 1 ? playNum++ : playNum=0;
+        isPlay = false;
+        playAudio();
+    }
+}
+
+function scrub(e) {
+    const scrubTime = (e.offsetX / playerTimeline.offsetWidth) * audio.duration;
+    audio.currentTime = scrubTime;
+}
+
+audio.addEventListener('timeupdate', updateTimePlayerElapsed);
+
+let mousedown = false;
+playerTimeline.addEventListener('click', scrub);
+
+playerTimeline.addEventListener('mousedown', (e) => mousedown && scrub(e));
+playerTimeline.addEventListener('mousedown', () => mousedown = true);
+playerTimeline.addEventListener('mouseup', () => mousedown = false);
 
 
 /* Translate */
