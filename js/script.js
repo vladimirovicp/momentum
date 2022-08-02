@@ -1,4 +1,21 @@
-import i18Obj from './translate.js';
+const state = {
+    language: 'en',
+    photoSource: 'github',
+    blocks: ['time', 'date','greeting', 'quote', 'weather', 'audio', 'todolist']
+}
+
+state['blocks']['time']= 1;
+state['blocks']['date']= 1;
+state['blocks']['greeting']= 1;
+state['blocks']['quote']= 1;
+state['blocks']['weather']= 1;
+state['blocks']['audio']= 1;
+state['blocks']['todolist']= 1;
+
+// console.log(state['language']);
+//
+// console.log(state['blocks']['time']);
+
 
 const time = document.querySelector('.time');
 const date_time = document.querySelector('.date');
@@ -427,6 +444,56 @@ currentlanguage.addEventListener('click', (e) => {
     getWeather();
     greetingPlaceholder(lang);
     goGetQuotes(count,lang);
+});
+
+
+
+
+
+
+
+
+//Popup
+
+let popupBg = document.querySelector('.popup__bg'); // Фон попап окна
+let popup = document.querySelector('.popup'); // Само окно loginPopUp
+let openPopupButton = document.querySelectorAll('.setting__link'); // Кнопки для показа окна
+
+openPopupButton.forEach((button) =>{
+    button.addEventListener('click', (e) => {
+        e.preventDefault(); // Предотвращаем дефолтное поведение браузера
+        popupBg.classList.add('active'); // Добавляем класс 'active' для фона
+        popup.classList.add('active'); // И для самого окна
+    })
+})
+
+document.addEventListener('click', (e) => { // Вешаем обработчик на весь документ
+    if(e.target === popupBg) { // Если цель клика - фот, то:
+        popupBg.classList.remove('active'); // Убираем активный класс с фона
+        loginPopUp.classList.remove('active');
+        signUpPopUp.classList.remove('active');
+        document.body.classList.remove('_lock');
+    }
+});
+
+
+
+let loginPopUpSignIn = document.querySelectorAll('.loginPopUp__signIn');
+loginPopUpSignIn.forEach((button) =>{
+    button.addEventListener('click', (e) => {
+        let loginPopUpEmail = loginPopUp.querySelector('.loginPopUp__email');
+        let loginPopUpPassword = loginPopUp.querySelector('.loginPopUp__password');
+        alert(`Вы ввели: \n Почта: `  + loginPopUpEmail.value  + `\n Пароль: ` + loginPopUpPassword.value);
+    })
+});
+
+let signUpPopUpSignIn = document.querySelectorAll('.signUpPopUp__signIn');
+signUpPopUpSignIn.forEach((button) =>{
+    button.addEventListener('click', (e) => {
+        let createPopUpEmail = signUpPopUp.querySelector('.signUpPopUp__email');
+        let createPopUpPassword = signUpPopUp.querySelector('.signUpPopUp__password');
+        alert(`Вы ввели: \n Почта: `  + createPopUpEmail.value  + `\n Пароль: ` + createPopUpPassword.value);
+    })
 });
 
 

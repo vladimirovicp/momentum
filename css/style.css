@@ -305,6 +305,23 @@ body {
   min-height: 20px;
 }
 
+.setting{
+  position: relative;
+  margin-bottom: 10px;
+}
+.setting__link{
+  color: #fff;
+}
+
+.language{
+  display: flex;
+  justify-content: center;
+}
+
+.setting__panel{
+  position: absolute;
+}
+
 
 
 @media (max-width: 768px) {

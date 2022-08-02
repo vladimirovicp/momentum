@@ -7,6 +7,7 @@
     <link href="assets/favicon.ico" rel="shortcut icon"/>
     <link rel="stylesheet" href="css/owfont-regular.css"/>
     <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/popup.css"/>
     <link rel="stylesheet" href="css/mainstyle.css"/>
     <title>momentum</title>
 </head>
@@ -31,11 +32,32 @@
         <ul class="play-list"></ul>
     </div>
 
-    <div class="language">
-        <ul>
-            <li><a href="#">en</a></li>
-            <li><a href="#" class="active">ru</a></li>
-        </ul>
+    <div>
+        <div class="setting">
+            <a href="#" class="setting__link">Настройки</a>
+
+            <div class="setting__panel-bg popup__bg active">
+                <div class="setting__panel popup active">
+
+                    <div>
+                        <input type="checkbox" id="langRu" name="subscribe" value="newsletter">
+                        <label for="langRu">Русский</label>
+                    </div>
+                    <div>
+                        <button type="submit">Subscribe</button>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="language">
+            <ul>
+                <li><a href="#">en</a></li>
+                <li><a href="#" class="active">ru</a></li>
+            </ul>
+        </div>
     </div>
 
     <div class="weather">
