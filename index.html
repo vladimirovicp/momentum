@@ -36,18 +36,25 @@
         <div class="setting">
             <a href="#" class="setting__link">Настройки</a>
 
-            <div class="setting__panel-bg popup__bg active">
-                <div class="setting__panel popup active">
+            <div class="setting__panel-bg popup__bg">
+                <div class="setting__panel popup">
 
-                    <div>
-                        <input type="checkbox" id="langRu" name="subscribe" value="newsletter">
-                        <label for="langRu">Русский</label>
+                    <div class="setting__language">
+                        <label for="setting__language-select">Язык:</label>
+                        <select id="setting__language-select" class="setting__language-select">
+                            <option>en</option>
+                            <option>ru</option>
+                        </select>
+
+                       <div class="setting__api">
+                           <label for="setting__api-select">Images API</label>
+                           <select id="setting__api-select" class="setting__api-select">
+                               <option>GitHub</option>
+                               <option>Unsplash API</option>
+                               <option>Flickr API</option>
+                           </select>
+                       </div>
                     </div>
-                    <div>
-                        <button type="submit">Subscribe</button>
-                    </div>
-
-
                 </div>
 
             </div>
