@@ -45,6 +45,7 @@ const quotesAuthor = document.querySelector('.author');
 const quotesButton = document.querySelector('.change-quote');
 
 let lang = localStorage.getItem('lang');
+let apiImg = localStorage.getItem('apiImg');
 
 // const options = { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'UTC' };
 
@@ -60,6 +61,10 @@ if(lang === 'ru'){
 
 const timeOptions = { hour: 'numeric', hour12: false, minute: 'numeric', second: 'numeric'};
 // const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+
+const selectAPIImg = document.querySelector('.setting__api-select');
+const tagAPIImg = document.querySelector('.setting__api-tag');
+
 
 function showLangFormatTime() {
     let showTimeLang;
@@ -151,6 +156,8 @@ function setLocalStorage() {
     localStorage.setItem('name', nameUser.value);
     localStorage.setItem('city', city.value);
     localStorage.setItem('lang', lang);
+    localStorage.setItem('apiImg', apiImg);
+
 }
 window.addEventListener('beforeunload', setLocalStorage);
 
@@ -166,6 +173,11 @@ function getLocalStorage() {
     if (localStorage.getItem('lang')) {
         lang = localStorage.getItem('lang');
         state.language = lang;
+    }
+    if (localStorage.getItem('apiImg')) {
+        apiImg = localStorage.getItem('apiImg');
+    } else {
+        apiImg = 'GitHub';
     }
 }
 window.addEventListener('load', getLocalStorage)
@@ -187,34 +199,118 @@ function setBg() {
     };
 }
 
-setBg();
+async function getLinkToImageUnsplash() {
+    const img = new Image();
+    const url = 'https://api.unsplash.com/photos/random?orientation=landscape&query='+tagAPIImg.value+'&client_id=Y5qN3vbov74jTCVNbP11Y28IU7zpVybrJ-IMcqGVaZM';
+    const res = await fetch(url);
+    const data = await res.json();
+    // console.log(data.urls.regular)
+    img.src = data.urls.regular;
+    img.onload = () => {
+        body.style.backgroundImage = body.style.backgroundImage = "url('" + img.src + "')";
+    };
+}
 
-// async function getLinkToImage() {
-//     const img = new Image();
-//     const url = 'https://api.unsplash.com/photos/random?orientation=landscape&query=nature&client_id=Y5qN3vbov74jTCVNbP11Y28IU7zpVybrJ-IMcqGVaZM';
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     // console.log(data.urls.regular)
-//     img.src = data.urls.regular;
-//         img.onload = () => {
-//         body.style.backgroundImage = body.style.backgroundImage = "url('" + img.src + "')";
-//     };
-// }
-//
-// getLinkToImage()
+async function getLinkToImageFlickr() {
+    const img = new Image();
+    const url = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=6adfdf0d7a547c1711a04c607737089c&tags='+tagAPIImg.value+'&extras=url_l&format=json&nojsoncallback=1';
+    const res = await fetch(url)
+    const data = await res.json();
+    console.log(randomNum);
+    //https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=6adfdf0d7a547c1711a04c607737089c&tags=nature&extras=url_l&format=json&nojsoncallback=1
+
+    // img.src = "https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay + "/" + randomNum.toString().padStart(2, '0') + ".jpg";
+    img.src = data.photos.photo[randomNum].url_l;
+    img.onload = () => {
+        body.style.backgroundImage = body.style.backgroundImage = "url('" + img.src + "')";
+    };
+}
+
+// getLinkToImageFlickr();
+
+
+function backgroundImage(){
+    switch(apiImg) {
+        case 'GitHub': setBg();
+            break;
+        case 'Unsplash API': getLinkToImageUnsplash();
+            break;
+        case 'Flickr API': getLinkToImageFlickr();
+            break;
+        default: setBg();
+    }
+
+    for(let i=0; i<selectAPIImg.options.length; i++) {
+        if (selectAPIImg.options[i].value === apiImg) {
+            selectAPIImg.options[i].selected = true;
+        } else {
+            selectAPIImg.options[i].selected = false;
+        }
+    }
+
+
+}
+
+backgroundImage();
+
+
+
+
 
 
 
 function getSlideNext() {
-    randomNum++;
-    randomNum > 20 ? randomNum = 1 : randomNum;
-    setBg();
+
+    console.log(apiImg);
+    switch(apiImg) {
+        case 'GitHub': {
+            console.log('888')
+            randomNum++;
+            randomNum > 20 ? randomNum = 1 : randomNum;
+            setBg();
+        }
+        break;
+        case 'Unsplash API': getLinkToImageUnsplash();
+        break;
+        case 'Flickr API': {
+            randomNum++;
+            randomNum > 20 ? randomNum = 1 : randomNum;
+            getLinkToImageFlickr();
+
+        }
+        break;
+        default: {
+            randomNum++;
+            randomNum > 20 ? randomNum = 1 : randomNum;
+            setBg();
+        }
+    }
+
+
 }
 
 function getSlidePrev() {
-    randomNum--;
-    randomNum < 1 ? randomNum = 20 : randomNum;
-    setBg();
+    switch(apiImg) {
+        case 'GitHub': {
+            randomNum--;
+            randomNum < 1 ? randomNum = 20 : randomNum;
+            setBg();
+        }
+            break;
+        case 'Unsplash API': getLinkToImageUnsplash();
+            break;
+        case 'Flickr API': {
+            randomNum--;
+            randomNum < 1 ? randomNum = 20 : randomNum;
+            getLinkToImageFlickr();
+        }
+            break;
+        default: {
+            randomNum--;
+            randomNum < 1 ? randomNum = 20 : randomNum;
+            setBg();
+        }
+    }
 }
 
 slideNext.addEventListener('click', getSlideNext);
@@ -546,13 +642,13 @@ settingLanguage.addEventListener("change", ()=>{
 });
 
 
-const selectAPIImg = document.querySelector('.setting__api-select');
 
 selectAPIImg.addEventListener("change", ()=>{
     let currentSelectAPI = selectAPIImg.value;
     for(let i=0; i<selectAPIImg.options.length; i++){
         if(selectAPIImg.options[i].value === currentSelectAPI ){
             selectAPIImg.options[i].selected = true;
+            apiImg = selectAPIImg.options[i].value;
         } else {
             selectAPIImg.options[i].selected = false;
         }
@@ -560,31 +656,12 @@ selectAPIImg.addEventListener("change", ()=>{
         // Unsplash API
         // Flickr API
     }
+    backgroundImage();
 });
 
-// console.log(selectAPIImg);
-
-
-
-// function getLinkToImage() {
-//     const url = 'https://api.unsplash.com/photos/random?orientation=landscape&query=nature&client_id=Y5qN3vbov74jTCVNbP11Y28IU7zpVybrJ-IMcqGVaZM';
-//     fetch(url)
-//         .then(res => res.json())
-//         .then(data => {
-//             console.log(data.urls.regular)
-//         });
-// }
-
-
-
-// async function getLinkToImage() {
-//     const url = 'https://api.unsplash.com/photos/random?orientation=landscape&query=nature&client_id=Y5qN3vbov74jTCVNbP11Y28IU7zpVybrJ-IMcqGVaZM';
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     console.log(data.urls.regular)
-// }
-//
-// getLinkToImage()
+tagAPIImg.addEventListener("change", ()=>{
+    backgroundImage();
+})
 
 
 
