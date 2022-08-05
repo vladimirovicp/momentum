@@ -158,6 +158,14 @@ function setLocalStorage() {
     localStorage.setItem('lang', lang);
     localStorage.setItem('apiImg', apiImg);
     localStorage.setItem('hidePlayer', state['blocks']['audio']);
+    localStorage.setItem('hideWeather', state['blocks']['weather']);
+    localStorage.setItem('hideGreeting', state['blocks']['greeting']);
+    localStorage.setItem('hideTime', state['blocks']['time']);
+    localStorage.setItem('hideDate', state['blocks']['date']);
+    localStorage.setItem('hideFooter', state['blocks']['quote']);
+
+
+
 }
 window.addEventListener('beforeunload', setLocalStorage);
 
@@ -186,7 +194,41 @@ function getLocalStorage() {
         state['blocks']['audio'] = false;
     }
 
-    instalРidePlayer();
+    if (localStorage.getItem('hideWeather')) {
+        state['blocks']['weather'] = localStorage.getItem('hideWeather');
+    } else {
+        state['blocks']['weather'] = false;
+    }
+
+    if (localStorage.getItem('hideGreeting')) {
+        state['blocks']['greeting'] = localStorage.getItem('hideGreeting');
+    } else {
+        state['blocks']['greeting'] = false;
+    }
+
+    if (localStorage.getItem('hideTime')) {
+        state['blocks']['time'] = localStorage.getItem('hideTime');
+    } else {
+        state['blocks']['time'] = false;
+    }
+
+    if (localStorage.getItem('hideDate')) {
+        state['blocks']['date'] = localStorage.getItem('hideDate');
+    } else {
+        state['blocks']['date'] = false;
+    }
+
+    if (localStorage.getItem('hideQuote')) {
+        state['blocks']['quote'] = localStorage.getItem('hideQuote');
+    } else {
+        state['blocks']['quote'] = false;
+    }
+
+
+
+    // blocks: ['time', 'date','greeting', 'quote', 'weather', 'audio', 'todolist']
+
+    instalBlock();
 
 }
 
@@ -571,11 +613,6 @@ currentlanguage.addEventListener('click', (e) => {
 
 
 
-
-
-
-
-
 //Popup
 
 let popupBg = document.querySelector('.popup__bg'); // Фон попап окна
@@ -680,6 +717,7 @@ tagAPIImg.addEventListener("change", ()=>{
 
 // Скрытие блоков
 
+//audio
 const hideBlock = document.querySelector('.setting__hideBlock');
 const hidePlayer = hideBlock.querySelector('.setting__hideBlock-player');
 
@@ -690,11 +728,9 @@ hidePlayer.addEventListener("change", ()=>{
         player.classList.remove('hide');
     }
     state['blocks']['audio'] = hidePlayer.checked;
+});
 
-    console.log(hidePlayer.checked)
-})
-
-function instalРidePlayer(){
+function instalBlock(){
     if(state['blocks']['audio'] === 'true'){
         player.classList.add('hide');
         hidePlayer.checked = true;
@@ -702,7 +738,63 @@ function instalРidePlayer(){
         player.classList.remove('hide');
         hidePlayer.checked = false;
     }
+
+    if(state['blocks']['weather'] === 'true'){
+        weather.classList.add('hide');
+        hideWeather.checked = true;
+    } else {
+        weather.classList.remove('hide');
+        hideWeather.checked = false;
+    }
+
+    if(state['blocks']['greeting'] === 'true'){
+        greetingContainer.classList.add('hide');
+        hideGreeting.checked = true;
+    } else {
+        greetingContainer.classList.remove('hide');
+        hideGreeting.checked = false;
+    }
+
+    // state['blocks']['greeting']= 1;
+// state['blocks']['quote']= 1;
+// state['blocks']['weather']= 1;
+// state['blocks']['audio']= 1;
+// state['blocks']['todolist']= 1;
+
+
 }
+
+//
+
+const weather = document.querySelector('.weather');
+const hideWeather = hideBlock.querySelector('.setting__hideBlock-weather');
+
+hideWeather.addEventListener("change", ()=>{
+    if(hideWeather.checked){
+        weather.classList.add('hide');
+    } else {
+        weather.classList.remove('hide');
+    }
+    state['blocks']['weather'] = hideWeather.checked;
+});
+
+ const hideGreeting = hideBlock.querySelector('.setting__hideBlock-greeting');
+
+hideGreeting.addEventListener("change", ()=>{
+        if(hideGreeting.checked){
+            greetingContainer.classList.add('hide');
+        } else {
+            greetingContainer.classList.remove('hide');
+        }
+        state['blocks']['greeting'] = hideGreeting.checked;
+    });
+
+
+
+// .time.hide,
+// .date.hide,
+// .greeting-container.hide,
+// .footer.hide
 
 
 
