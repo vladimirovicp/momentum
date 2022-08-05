@@ -4,13 +4,13 @@ const state = {
     blocks: ['time', 'date','greeting', 'quote', 'weather', 'audio', 'todolist']
 }
 
-state['blocks']['time']= 1;
-state['blocks']['date']= 1;
-state['blocks']['greeting']= 1;
-state['blocks']['quote']= 1;
-state['blocks']['weather']= 1;
-state['blocks']['audio']= 1;
-state['blocks']['todolist']= 1;
+// state['blocks']['time']= 1;
+// state['blocks']['date']= 1;
+// state['blocks']['greeting']= 1;
+// state['blocks']['quote']= 1;
+// state['blocks']['weather']= 1;
+// state['blocks']['audio']= 1;
+// state['blocks']['todolist']= 1;
 
 const time = document.querySelector('.time');
 const date_time = document.querySelector('.date');
@@ -157,7 +157,7 @@ function setLocalStorage() {
     localStorage.setItem('city', city.value);
     localStorage.setItem('lang', lang);
     localStorage.setItem('apiImg', apiImg);
-
+    localStorage.setItem('hidePlayer', state['blocks']['audio']);
 }
 window.addEventListener('beforeunload', setLocalStorage);
 
@@ -179,7 +179,19 @@ function getLocalStorage() {
     } else {
         apiImg = 'GitHub';
     }
+
+    if (localStorage.getItem('hidePlayer')) {
+        state['blocks']['audio'] = localStorage.getItem('hidePlayer');
+    } else {
+        state['blocks']['audio'] = false;
+    }
+
+    instalРidePlayer();
+
 }
+
+
+
 window.addEventListener('load', getLocalStorage)
 
 
@@ -216,7 +228,7 @@ async function getLinkToImageFlickr() {
     const url = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=6adfdf0d7a547c1711a04c607737089c&tags='+tagAPIImg.value+'&extras=url_l&format=json&nojsoncallback=1';
     const res = await fetch(url)
     const data = await res.json();
-    console.log(randomNum);
+    // console.log(randomNum);
     //https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=6adfdf0d7a547c1711a04c607737089c&tags=nature&extras=url_l&format=json&nojsoncallback=1
 
     // img.src = "https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay + "/" + randomNum.toString().padStart(2, '0') + ".jpg";
@@ -261,10 +273,10 @@ backgroundImage();
 
 function getSlideNext() {
 
-    console.log(apiImg);
+    // console.log(apiImg);
     switch(apiImg) {
         case 'GitHub': {
-            console.log('888')
+            // console.log('888')
             randomNum++;
             randomNum > 20 ? randomNum = 1 : randomNum;
             setBg();
@@ -404,18 +416,19 @@ import playList from './playList.js';
 let isPlay = false;
 let playNum = 0;
 
+const player = document.querySelector('.player');
 const audio = new Audio();
-const playBtn = document.querySelector('.play');
-const playPrevBtn = document.querySelector('.play-prev');
-const playNextBtn = document.querySelector('.play-next');
-const playListContainer = document.querySelector('.play-list');
+const playBtn = player.querySelector('.play');
+const playPrevBtn = player.querySelector('.play-prev');
+const playNextBtn = player.querySelector('.play-next');
+const playListContainer = player.querySelector('.play-list');
 
-const playerTimeline = document.querySelector(".player-timeline");
+const playerTimeline = player.querySelector(".player-timeline");
 
-const playerCurrent = document.querySelector(".player-current");
-const playerLength = document.querySelector(".player-length");
+const playerCurrent = player.querySelector(".player-current");
+const playerLength = player.querySelector(".player-length");
 
-const progressBar = document.querySelector('.player-progress');
+const progressBar = player.querySelector('.player-progress');
 let currentTime = 0;
 
 function playAudio() {
@@ -663,6 +676,33 @@ tagAPIImg.addEventListener("change", ()=>{
     backgroundImage();
 })
 
+
+
+// Скрытие блоков
+
+const hideBlock = document.querySelector('.setting__hideBlock');
+const hidePlayer = hideBlock.querySelector('.setting__hideBlock-player');
+
+hidePlayer.addEventListener("change", ()=>{
+    if(hidePlayer.checked){
+        player.classList.add('hide');
+    } else {
+        player.classList.remove('hide');
+    }
+    state['blocks']['audio'] = hidePlayer.checked;
+
+    console.log(hidePlayer.checked)
+})
+
+function instalРidePlayer(){
+    if(state['blocks']['audio'] === 'true'){
+        player.classList.add('hide');
+        hidePlayer.checked = true;
+    } else {
+        player.classList.remove('hide');
+        hidePlayer.checked = false;
+    }
+}
 
 
 

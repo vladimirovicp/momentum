@@ -144,6 +144,25 @@ body {
   flex-basis: 0%;
 }
 
+.player,
+.weather,
+.time,
+.date,
+.greeting-container,
+.footer
+{
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+.player.hide,
+.weather.hide,
+.time.hide,
+.date.hide,
+.greeting-container.hide,
+.footer.hide{
+  opacity: 0;
+}
+
 
 
 
