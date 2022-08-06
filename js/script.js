@@ -177,6 +177,7 @@ function getLocalStorage() {
 
     if (localStorage.getItem('city')) {
         city.value = localStorage.getItem('city');
+
     }
     if (localStorage.getItem('lang')) {
         lang = localStorage.getItem('lang');
@@ -376,7 +377,7 @@ slidePrev.addEventListener('click', getSlidePrev);
 const weatherIcon = document.querySelector('.weather-icon');
 const temperature = document.querySelector('.temperature');
 const weatherDescription = document.querySelector('.weather-description');
-
+const weatherError =  document.querySelector('.weather-error');
 // .weather[0].id - id иконки погоды
 // .weather[0].description - описание погоды
 // .main.temp - температура
@@ -393,28 +394,58 @@ function defaultCity(){
 async function getWeather() {
 
     defaultCity();
-
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=${lang}&appid=9cdada7fb28c4dfbf39ead2d36a2b20b&units=metric`;
-    const res = await fetch(url);
-    const data = await res.json();
+
+    console.log(city.value)
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        console.log('111')
+            weatherIcon.className = 'weather-icon owf';
+            weatherIcon.classList.add(`owf-${data.weather[0].id}`); //иконка погоды
+            temperature.textContent = `${Math.trunc(data.main.temp)}°C`; //температуру в °C
+            weatherDescription.textContent = data.weather[0].description; //описание погоды
+
+            if (lang === 'ru') {
+                wind.textContent = `Скор. ветра: ${Math.trunc(data.wind.speed)}м/с`; //скорость ветра в м/с
+                humidity.textContent = `Влаж. воздуха: ${Math.trunc(data.main.humidity)}%`; // относительную влажность воздуха в %
+            } else{
+                wind.textContent = ` Wind speed: ${Math.trunc(data.wind.speed)}м/с`; //скорость ветра в м/с
+                humidity.textContent = `Humidity: ${Math.trunc(data.main.humidity)}%`; // относительную влажность воздуха в %
+            }
+        weatherError.textContent = '';
+    } catch (error){
+        console.log('0000')
+        temperature.textContent = '';
+        weatherDescription.textContent = '';
+        wind.textContent = '';
+        humidity.textContent = '';
+        weatherError.textContent = 'Город ' + city.value + ' не определен системой';
+    }
 
 
-        weatherIcon.className = 'weather-icon owf';
-        weatherIcon.classList.add(`owf-${data.weather[0].id}`); //иконка погоды
-        temperature.textContent = `${Math.trunc(data.main.temp)}°C`; //температуру в °C
-        weatherDescription.textContent = data.weather[0].description; //описание погоды
-
-        if (lang === 'ru') {
-            wind.textContent = `Скор. ветра: ${Math.trunc(data.wind.speed)}м/с`; //скорость ветра в м/с
-            humidity.textContent = `Влаж. воздуха: ${Math.trunc(data.main.humidity)}%`; // относительную влажность воздуха в %
-        } else{
-            wind.textContent = ` Wind speed: ${Math.trunc(data.wind.speed)}м/с`; //скорость ветра в м/с
-            humidity.textContent = `Humidity: ${Math.trunc(data.main.humidity)}%`; // относительную влажность воздуха в %
-        }
+    // const res = await fetch(url);
+    // const data = await res.json();
+    //
+    //
+    //     weatherIcon.className = 'weather-icon owf';
+    //     weatherIcon.classList.add(`owf-${data.weather[0].id}`); //иконка погоды
+    //     temperature.textContent = `${Math.trunc(data.main.temp)}°C`; //температуру в °C
+    //     weatherDescription.textContent = data.weather[0].description; //описание погоды
+    //
+    //     if (lang === 'ru') {
+    //         wind.textContent = `Скор. ветра: ${Math.trunc(data.wind.speed)}м/с`; //скорость ветра в м/с
+    //         humidity.textContent = `Влаж. воздуха: ${Math.trunc(data.main.humidity)}%`; // относительную влажность воздуха в %
+    //     } else{
+    //         wind.textContent = ` Wind speed: ${Math.trunc(data.wind.speed)}м/с`; //скорость ветра в м/с
+    //         humidity.textContent = `Humidity: ${Math.trunc(data.main.humidity)}%`; // относительную влажность воздуха в %
+    //     }
 
 
 
 }
+
 getWeather();
 
 const max = 100
