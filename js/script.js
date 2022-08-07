@@ -233,10 +233,12 @@ function getLocalStorage() {
 
 }
 
-
-
 window.addEventListener('load', getLocalStorage)
 
+if (localStorage.getItem('city')) {
+    city.value = localStorage.getItem('city');
+
+}
 
 function getRandomNum() {
     const min = 1;
@@ -259,7 +261,6 @@ async function getLinkToImageUnsplash() {
     const url = 'https://api.unsplash.com/photos/random?orientation=landscape&query='+tagAPIImg.value+'&client_id=Y5qN3vbov74jTCVNbP11Y28IU7zpVybrJ-IMcqGVaZM';
     const res = await fetch(url);
     const data = await res.json();
-    // console.log(data.urls.regular)
     img.src = data.urls.regular;
     img.onload = () => {
         body.style.backgroundImage = body.style.backgroundImage = "url('" + img.src + "')";
@@ -271,7 +272,6 @@ async function getLinkToImageFlickr() {
     const url = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=6adfdf0d7a547c1711a04c607737089c&tags='+tagAPIImg.value+'&extras=url_l&format=json&nojsoncallback=1';
     const res = await fetch(url)
     const data = await res.json();
-    // console.log(randomNum);
     //https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=6adfdf0d7a547c1711a04c607737089c&tags=nature&extras=url_l&format=json&nojsoncallback=1
 
     // img.src = "https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay + "/" + randomNum.toString().padStart(2, '0') + ".jpg";
@@ -396,12 +396,9 @@ async function getWeather() {
     defaultCity();
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=${lang}&appid=9cdada7fb28c4dfbf39ead2d36a2b20b&units=metric`;
 
-    console.log(city.value)
-
     try {
         const res = await fetch(url);
         const data = await res.json();
-        console.log('111')
             weatherIcon.className = 'weather-icon owf';
             weatherIcon.classList.add(`owf-${data.weather[0].id}`); //иконка погоды
             temperature.textContent = `${Math.trunc(data.main.temp)}°C`; //температуру в °C
@@ -416,7 +413,6 @@ async function getWeather() {
             }
         weatherError.textContent = '';
     } catch (error){
-        console.log('0000')
         temperature.textContent = '';
         weatherDescription.textContent = '';
         wind.textContent = '';
