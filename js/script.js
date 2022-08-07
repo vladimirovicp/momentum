@@ -1,3 +1,5 @@
+import i18Obj from './translate.js';
+
 const state = {
     language: 'en',
     photoSource: 'github',
@@ -47,6 +49,8 @@ const quotesButton = document.querySelector('.change-quote');
 let lang = localStorage.getItem('lang');
 let apiImg = localStorage.getItem('apiImg');
 
+const footer = document.querySelector('.footer');
+
 // const options = { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'UTC' };
 
 let dateOptions;
@@ -65,6 +69,8 @@ const timeOptions = { hour: 'numeric', hour12: false, minute: 'numeric', second:
 const selectAPIImg = document.querySelector('.setting__api-select');
 const tagAPIImg = document.querySelector('.setting__api-tag');
 
+
+getTranslate(lang);
 
 function showLangFormatTime() {
     let showTimeLang;
@@ -162,7 +168,7 @@ function setLocalStorage() {
     localStorage.setItem('hideGreeting', state['blocks']['greeting']);
     localStorage.setItem('hideTime', state['blocks']['time']);
     localStorage.setItem('hideDate', state['blocks']['date']);
-    localStorage.setItem('hideFooter', state['blocks']['quote']);
+    localStorage.setItem('hideQuote', state['blocks']['quote']);
 
 
 
@@ -519,12 +525,16 @@ function playAudio() {
         // playerCurrent.textContent = audio.currentTime;
         playerLength.textContent = playList[playNum].duration;
 
+
     } else{
         isPlay = false;
+        currentTime = audio.currentTime;
         audio.pause();
         playBtn.classList.remove("pause");
-        currentTime = audio.currentTime;
+
     }
+
+    console.log(audio.currentTime);
 }
 
 playBtn.addEventListener('click', playAudio);
@@ -597,6 +607,8 @@ function updateTimePlayerElapsed() {
 function scrub(e) {
     const scrubTime = (e.offsetX / playerTimeline.offsetWidth) * audio.duration;
     audio.currentTime = scrubTime;
+    currentTime = scrubTime;
+    console.log(audio.currentTime);
 }
 
 audio.addEventListener('timeupdate', updateTimePlayerElapsed);
@@ -632,6 +644,7 @@ currentlanguage.addEventListener('click', (e) => {
     currentlanguage.querySelectorAll('li a').forEach(el => {
         el.classList.toggle('active');
     });
+    getTranslate(lang);
     selectlang();
     getWeather();
     greetingPlaceholder(lang);
@@ -782,6 +795,32 @@ function instalBlock(){
         hideGreeting.checked = false;
     }
 
+    if(state['blocks']['quote'] === 'true'){
+        footer.classList.add('hide');
+        hideQuote.checked = true;
+    } else {
+        footer.classList.remove('hide');
+        hideQuote.checked = false;
+    }
+
+    if(state['blocks']['date'] === 'true'){
+        date_time.classList.add('hide');
+        hideDate.checked = true;
+    } else {
+        date_time.classList.remove('hide');
+        hideDate.checked = false;
+    }
+
+    if(state['blocks']['time'] === 'true'){
+        time.classList.add('hide');
+        hideTime.checked = true;
+    } else {
+        time.classList.remove('hide');
+        hideTime.checked = false;
+    }
+
+
+
     // state['blocks']['greeting']= 1;
 // state['blocks']['quote']= 1;
 // state['blocks']['weather']= 1;
@@ -817,11 +856,50 @@ hideGreeting.addEventListener("change", ()=>{
     });
 
 
+const hideQuote = hideBlock.querySelector('.setting__hideBlock-quote');
+
+hideQuote.addEventListener("change", ()=>{
+    if( hideQuote.checked){
+        footer.classList.add('hide');
+    } else {
+        footer.classList.remove('hide');
+    }
+    state['blocks']['quote'] = hideQuote.checked;
+});
+
+const hideTime = hideBlock.querySelector('.setting__hideBlock-time');
+hideTime.addEventListener("change", ()=>{
+    if( hideTime.checked){
+        time.classList.add('hide');
+    } else {
+        time.classList.remove('hide');
+    }
+    state['blocks']['time'] = hideTime.checked;
+});
+
+const hideDate = hideBlock.querySelector('.setting__hideBlock-date');
+hideDate.addEventListener("change", ()=>{
+    if( hideDate.checked){
+        date_time.classList.add('hide');
+    } else {
+        date_time.classList.remove('hide');
+    }
+    state['blocks']['date'] = hideDate.checked;
+});
+
 
 // .time.hide,
 // .date.hide,
-// .greeting-container.hide,
-// .footer.hide
+
+
+
+function getTranslate(lang) {
+    const i18 = document.querySelectorAll('[data-i18]');
+    i18.forEach((value) => {
+        const text = value.dataset.i18;
+        value.textContent = i18Obj[lang][text];
+    });
+}
 
 
 
