@@ -67,7 +67,16 @@ const timeOptions = { hour: 'numeric', hour12: false, minute: 'numeric', second:
 // const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
 
 const selectAPIImg = document.querySelector('.setting__api-select');
+
 const tagAPIImg = document.querySelector('.setting__api-tag');
+let tagApiValue;
+if (localStorage.getItem('tagApiValue')) {
+    tagApiValue = localStorage.getItem('tagApiValue');
+    tagAPIImg.value = tagApiValue;
+} else {
+    tagApiValue = 'nature';
+    tagAPIImg.value = tagApiValue;
+}
 
 
 getTranslate(lang);
@@ -163,6 +172,7 @@ function setLocalStorage() {
     localStorage.setItem('city', city.value);
     localStorage.setItem('lang', lang);
     localStorage.setItem('apiImg', apiImg);
+    localStorage.setItem('tagApiValue',tagApiValue);
     localStorage.setItem('hidePlayer', state['blocks']['audio']);
     localStorage.setItem('hideWeather', state['blocks']['weather']);
     localStorage.setItem('hideGreeting', state['blocks']['greeting']);
@@ -230,6 +240,16 @@ function getLocalStorage() {
     } else {
         state['blocks']['quote'] = false;
     }
+
+    if (localStorage.getItem('tagApiValue')) {
+        tagApiValue = localStorage.getItem('tagApiValue');
+        tagAPIImg.value = tagApiValue;
+    } else {
+        tagApiValue = 'nature';
+        tagAPIImg.value = tagApiValue;
+    }
+
+
 
 
 
@@ -321,7 +341,6 @@ backgroundImage();
 
 
 function getSlideNext() {
-
     // console.log(apiImg);
     switch(apiImg) {
         case 'GitHub': {
@@ -346,8 +365,6 @@ function getSlideNext() {
             setBg();
         }
     }
-
-
 }
 
 function getSlidePrev() {
@@ -621,6 +638,59 @@ playerTimeline.addEventListener('mousedown', () => mousedown = true);
 playerTimeline.addEventListener('mouseup', () => mousedown = false);
 
 
+
+const volumeControls = player.querySelector('.volume-controls');
+const volume = volumeControls.querySelector('.volume');
+const volumeButton = player.querySelector('#volume-button');
+const volumeIcons = volumeButton.querySelectorAll('.volume-button use');
+const volumeMute = volumeButton.querySelector('use[href="#volume-mute"]');
+const volumeLow = volumeButton.querySelector('use[href="#volume-low"]');
+const volumeHigh = volumeButton.querySelector('use[href="#volume-high"]');
+
+
+function updateVolume() {
+    if (audio.muted) {
+        audio.muted = false;
+    }
+    audio.volume = volume.value;
+}
+
+
+function updateVolumeIcon() {
+    volumeIcons.forEach(icon => {
+        icon.classList.add('hidden');
+    });
+
+    volumeButton.setAttribute('data-title', 'Mute (m)')
+
+    if (audio.muted || audio.volume === 0) {
+        volumeMute.classList.remove('hidden');
+        volumeButton.setAttribute('data-title', 'Unmute (m)')
+    } else if (audio.volume > 0 && audio.volume <= 0.5) {
+        volumeLow.classList.remove('hidden');
+    } else {
+        volumeHigh.classList.remove('hidden');
+    }
+}
+
+function toggleMute() {
+    audio.muted = !audio.muted;
+
+    if (audio.muted) {
+        volume.setAttribute('data-volume', volume.value);
+        volume.value = 0;
+    } else {
+        volume.value = volume.dataset.volume;
+    }
+
+    updateVolumeIcon();
+}
+
+volume.addEventListener('input', updateVolume);
+// audio.addEventListener('volumechange', updateVolumeIcon);
+volumeButton.addEventListener('click', toggleMute);
+
+
 /* Translate */
 
 let currentlanguage = document.querySelector('.language');
@@ -750,6 +820,7 @@ selectAPIImg.addEventListener("change", ()=>{
 });
 
 tagAPIImg.addEventListener("change", ()=>{
+    tagApiValue = tagAPIImg.value;
     backgroundImage();
 })
 

@@ -342,6 +342,41 @@ body {
 }
 
 
+.volume-controls {
+  display: flex;
+  align-items: center;
+}
+
+.volume-button{
+  cursor: pointer;
+  position: relative;
+  margin-right: 7px;
+  font-size: 12px;
+  padding: 3px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding-right: 5px;
+}
+
+.volume-controls svg {
+  width: 28px;
+  height: 28px;
+  fill: #b3b3b3;
+  stroke: #b3b3b3;
+  cursor: pointer;
+}
+
+.volume-controls svg:hover {
+  fill: #bdae82;
+}
+
+.hidden {
+  display: none!important;
+}
+
+
+
 
 @media (max-width: 768px) {
   .time {
