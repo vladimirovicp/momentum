@@ -9,7 +9,11 @@ const i18Obj = {
         'greeting':'greeting',
         'quote':'quote',
         'weather': 'weather',
-        'player':'player'
+        'player':'player',
+        'todolist': 'ToDo List',
+        'todolist_text': 'Tasks for the day:',
+        'add': 'Add',
+        'delete': 'Delete'
     },
     'ru': {
         'setting': 'Настройки',
@@ -21,7 +25,11 @@ const i18Obj = {
         'greeting':'Приветствие',
         'quote':'Цитаты',
         'weather': 'Погода',
-        'player':'Плеер'
+        'player':'Плеер',
+        'todolist': 'Cписок дел',
+        'todolist_text': 'Задачи на день:',
+        'add': 'Добавить',
+        'delete': 'Удалить'
     }
 }
 

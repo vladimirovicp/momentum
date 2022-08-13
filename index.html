@@ -177,6 +177,30 @@
         <span class="greeting"></span>
         <input type="text" class="name" placeholder="[Введите имя]"/>
     </div>
+
+    <div class="todo">
+        <h2 data-i18="todolist">ToDo List</h2>
+        <div class="flex-wrapper">
+            <div class="add-todo-wrapper">
+                <div class="input-wrapper">
+                    <input type="text" id="description-task">
+                </div>
+                <div class="button-wrapper">
+                    <button id="add-task-btn" data-i18="add">Добавить</button>
+                </div>
+            </div>
+            <h2 data-i18="todolist_text">Задачи на день:</h2>
+            <div class="todos-wrapper">
+                <div class="todo-item">
+                    <div class="description">Проверить данный таск</div>
+                    <div class="buttons">
+                        <input class="btn-complete" type="checkbox">
+                        <button class="btn-delete" data-i18="delete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 <footer class="footer">
     <button class="change-quote"></button>
@@ -185,7 +209,9 @@
         <div class="author"></div>
     </div>
 </footer>
+
 <script type="module" src="js/script.js"></script>
+<script src="js/todolist.js"></script>
 </body>
 
 </html>

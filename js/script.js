@@ -46,7 +46,19 @@ const quotesQuote = document.querySelector('.quote');
 const quotesAuthor = document.querySelector('.author');
 const quotesButton = document.querySelector('.change-quote');
 
-let lang = localStorage.getItem('lang');
+let lang;
+if (localStorage.getItem('lang')) {
+
+    if(localStorage.getItem('lang') === 'ru'){
+        lang = localStorage.getItem('lang');
+    } else{
+        lang = 'en';
+    }
+} else {
+    lang = 'ru';
+}
+
+
 let apiImg = localStorage.getItem('apiImg');
 
 const footer = document.querySelector('.footer');
@@ -964,17 +976,13 @@ hideDate.addEventListener("change", ()=>{
 
 
 
-function getTranslate(lang) {
+function getTranslate() {
     const i18 = document.querySelectorAll('[data-i18]');
+
+    console.log(lang);
+
     i18.forEach((value) => {
         const text = value.dataset.i18;
         value.textContent = i18Obj[lang][text];
     });
 }
-
-
-
-
-
-
-
