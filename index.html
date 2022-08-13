@@ -26,21 +26,34 @@
             <div class="divider">/</div>
             <div class="player-length">01:50</div>
         </div>
+
+        <div class="volume-controls">
+            <button class="volume-button" id="volume-button">
+                <svg>
+                    <use class="hidden" href="#volume-mute"></use>
+                    <use class="hidden" href="#volume-low"></use>
+                    <use href="#volume-high"></use>
+                </svg>
+            </button>
+            <input type="range" name='volume' class="player__slider volume" min="0" max="1" step="0.05" value="1">
+        </div>
+
         <div class="player-timeline">
             <div class="player-progress"></div>
         </div>
+
         <ul class="play-list"></ul>
     </div>
 
     <div>
         <div class="setting">
-            <a href="#" class="setting__link">Настройки</a>
+            <a href="#" class="setting__link" data-i18="setting">Настройки</a>
 
             <div class="setting__panel-bg popup__bg">
                 <div class="setting__panel popup">
 
                     <div class="setting__language">
-                        <label for="setting__language-select">Язык:</label>
+                        <label for="setting__language-select" data-i18="language">Язык:</label>
                         <select id="setting__language-select" class="setting__language-select">
                             <option>en</option>
                             <option>ru</option>
@@ -53,7 +66,30 @@
                                <option>Unsplash API</option>
                                <option>Flickr API</option>
                            </select>
+                           <br>
+                           <label for="setting__api-tag" data-i18="tag">тег/теги для API</label>
+                           <input id="setting__api-tag" class="setting__api-tag" type="text" value="nature">
                        </div>
+                        <h2 data-i18="hiding_blocks">Скрытие блоков</h2>
+                        <div class="setting__hideBlock">
+                            <label for="setting__hideBlock-time" data-i18="time">time</label>
+                            <input type="checkbox" id="setting__hideBlock-time" name="setting__hideBlock-time" class="setting__hideBlock-time">
+                            <br>
+                            <label for="setting__hideBlock-date"  data-i18="date">date</label>
+                            <input type="checkbox" id="setting__hideBlock-date" name="setting__hideBlock-date" class="setting__hideBlock-date">
+                            <br>
+                            <label for="setting__hideBlock-greeting"  data-i18="greeting">greeting</label>
+                            <input type="checkbox" id="setting__hideBlock-greeting" name="setting__hideBlock-greeting" class="setting__hideBlock-greeting">
+                            <br>
+                            <label for="setting__hideBlock-quote" data-i18="quote">quote</label>
+                            <input type="checkbox" id="setting__hideBlock-quote" name="setting__hideBlock-quote" class="setting__hideBlock-quote">
+                            <br>
+                            <label for="setting__hideBlock-weather" data-i18="weather">weather</label>
+                            <input type="checkbox" id="setting__hideBlock-weather" name="setting__hideBlock-weather" class="setting__hideBlock-weather">
+                            <br>
+                            <label for="setting__hideBlock-player" data-i18="player">player</label>
+                            <input type="checkbox" id="setting__hideBlock-player" name="setting__hideBlock-player" class="setting__hideBlock-player">
+                        </div>
                     </div>
                 </div>
 
@@ -68,7 +104,7 @@
     </div>
 
     <div class="weather">
-        <input type="text" class="city" value="Минск"/>
+        <input type="text" class="city" value=""/>
         <i class="weather-icon owf"></i>
         <div class="weather-error"></div>
         <div class="description-container">
@@ -78,6 +114,54 @@
         <div class="wind"></div>
         <div class="humidity"></div>
     </div>
+
+    <svg style="display: none">
+        <defs>
+            <symbol id="pause" viewBox="0 0 24 24">
+                <path d="M14.016 5.016h3.984v13.969h-3.984v-13.969zM6 18.984v-13.969h3.984v13.969h-3.984z"></path>
+            </symbol>
+
+            <symbol id="play-icon" viewBox="0 0 24 24">
+                <path d="M8.016 5.016l10.969 6.984-10.969 6.984v-13.969z"></path>
+            </symbol>
+
+            <symbol id="volume-high" viewBox="0 0 24 24">
+                <path
+                        d="M14.016 3.234q3.047 0.656 5.016 3.117t1.969 5.648-1.969 5.648-5.016 3.117v-2.063q2.203-0.656 3.586-2.484t1.383-4.219-1.383-4.219-3.586-2.484v-2.063zM16.5 12q0 2.813-2.484 4.031v-8.063q1.031 0.516 1.758 1.688t0.727 2.344zM3 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6z">
+                </path>
+            </symbol>
+
+            <symbol id="volume-low" viewBox="0 0 24 24">
+                <path
+                        d="M5.016 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6zM18.516 12q0 2.766-2.531 4.031v-8.063q1.031 0.516 1.781 1.711t0.75 2.32z">
+                </path>
+            </symbol>
+
+            <symbol id="volume-mute" viewBox="0 0 24 24">
+                <path
+                        d="M12 3.984v4.219l-2.109-2.109zM4.266 3l16.734 16.734-1.266 1.266-2.063-2.063q-1.547 1.313-3.656 1.828v-2.063q1.172-0.328 2.25-1.172l-4.266-4.266v6.75l-5.016-5.016h-3.984v-6h4.734l-4.734-4.734zM18.984 12q0-2.391-1.383-4.219t-3.586-2.484v-2.063q3.047 0.656 5.016 3.117t1.969 5.648q0 2.203-1.031 4.172l-1.5-1.547q0.516-1.266 0.516-2.625zM16.5 12q0 0.422-0.047 0.609l-2.438-2.438v-2.203q1.031 0.516 1.758 1.688t0.727 2.344z">
+                </path>
+            </symbol>
+
+            <symbol id="fullscreen" viewBox="0 0 24 24">
+                <path
+                        d="M14.016 5.016h4.969v4.969h-1.969v-3h-3v-1.969zM17.016 17.016v-3h1.969v4.969h-4.969v-1.969h3zM5.016 9.984v-4.969h4.969v1.969h-3v3h-1.969zM6.984 14.016v3h3v1.969h-4.969v-4.969h1.969z">
+                </path>
+            </symbol>
+
+            <symbol id="fullscreen-exit" viewBox="0 0 24 24">
+                <path
+                        d="M15.984 8.016h3v1.969h-4.969v-4.969h1.969v3zM14.016 18.984v-4.969h4.969v1.969h-3v3h-1.969zM8.016 8.016v-3h1.969v4.969h-4.969v-1.969h3zM5.016 15.984v-1.969h4.969v4.969h-1.969v-3h-3z">
+                </path>
+            </symbol>
+
+            <symbol id="pip" viewBox="0 0 24 24">
+                <path
+                        d="M21 19.031v-14.063h-18v14.063h18zM23.016 18.984q0 0.797-0.609 1.406t-1.406 0.609h-18q-0.797 0-1.406-0.609t-0.609-1.406v-14.016q0-0.797 0.609-1.383t1.406-0.586h18q0.797 0 1.406 0.586t0.609 1.383v14.016zM18.984 11.016v6h-7.969v-6h7.969z">
+                </path>
+            </symbol>
+        </defs>
+    </svg>
 </header>
 <main class="main">
     <div class="slider-icons">
@@ -93,6 +177,30 @@
         <span class="greeting"></span>
         <input type="text" class="name" placeholder="[Введите имя]"/>
     </div>
+
+    <div class="todo">
+        <h2 data-i18="todolist">ToDo List</h2>
+        <div class="flex-wrapper">
+            <div class="add-todo-wrapper">
+                <div class="input-wrapper">
+                    <input type="text" id="description-task">
+                </div>
+                <div class="button-wrapper">
+                    <button id="add-task-btn" data-i18="add">Добавить</button>
+                </div>
+            </div>
+            <h2 data-i18="todolist_text">Задачи на день:</h2>
+            <div class="todos-wrapper">
+                <div class="todo-item">
+                    <div class="description">Проверить данный таск</div>
+                    <div class="buttons">
+                        <input class="btn-complete" type="checkbox">
+                        <button class="btn-delete" data-i18="delete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 <footer class="footer">
     <button class="change-quote"></button>
@@ -101,7 +209,9 @@
         <div class="author"></div>
     </div>
 </footer>
+
 <script type="module" src="js/script.js"></script>
+<script src="js/todolist.js"></script>
 </body>
 
 </html>
