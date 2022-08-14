@@ -21,21 +21,23 @@
             <button class="play player-icon"></button>
             <button class="play-next player-icon"></button>
         </div>
-        <div class="player-time">
-            <div class="player-current">00:03</div>
-            <div class="divider">/</div>
-            <div class="player-length">01:50</div>
-        </div>
-
-        <div class="volume-controls">
-            <button class="volume-button" id="volume-button">
-                <svg>
-                    <use class="hidden" href="#volume-mute"></use>
-                    <use class="hidden" href="#volume-low"></use>
-                    <use href="#volume-high"></use>
-                </svg>
-            </button>
-            <input type="range" name='volume' class="player__slider volume" min="0" max="1" step="0.05" value="1">
+        <div class="player-name">Summer Wind</div>
+        <div class="wrapper-time-volume">
+            <div class="volume-controls">
+                <button class="volume-button" id="volume-button">
+                    <svg>
+                        <use class="hidden" href="#volume-mute"></use>
+                        <use class="hidden" href="#volume-low"></use>
+                        <use href="#volume-high"></use>
+                    </svg>
+                </button>
+                <input type="range" name='volume' class="player__slider volume" min="0" max="1" step="0.05" value="1">
+            </div>
+            <div class="player-time">
+                <div class="player-current">00:03</div>
+                <div class="divider">/</div>
+                <div class="player-length">01:50</div>
+            </div>
         </div>
 
         <div class="player-timeline">
