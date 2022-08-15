@@ -593,29 +593,44 @@ playNextBtn.addEventListener('click', playNext);
     playList.forEach(el => {
         const li = document.createElement('li');
         li.classList.add('play-item');
-        // li.textContent = el.title;
-        li.innerHTML = el.title +
-            `        <button class="player__button toggle" title="Toggle Play">
-                        <svg class="playback-icons">
-                            <use href="#play-icon"></use>
-                            <use class="hidden" href="#pause"></use>
-                        </svg>
-                    </button>
-            `;
+        li.setAttribute('data-track', el.track);
+
+
+        li.textContent = el.title;
+        // li.innerHTML = el.title +
+        //     `        <button class="player__button toggle" title="Toggle Play">
+        //                 <svg class="playback-icons">
+        //                     <use href="#play-icon"></use>
+        //                     <use class="hidden" href="#pause"></use>
+        //                 </svg>
+        //             </button>
+        //     `;
         playListContainer.append(li);
     });
 
 
-    // const playItems = playListContainer.querySelectorAll('.play-item');
-    //
-    // playItems.forEach( playItem => {
-    //     playItem.addEventListener('click', (e) =>{
-    //         e.preventDefault()
-    //         let item = e.target.closest('.play-item')
-    //         console.log(item.dataset.id)
-    //         // console.log(e);
-    //     });
-    // });
+
+
+
+    const playItems = playListContainer.querySelectorAll('.play-item');
+
+
+    playItems.forEach( playItem => {
+        playItem.addEventListener('click', (e) =>{
+            e.preventDefault()
+            let item = e.target.closest('.play-item')
+            // console.log(item.dataset.track);
+
+            if( playNum === parseInt(item.dataset.track)){
+                playAudio();
+            } else {
+                isPlay = false;
+                currentTime = 0;
+                playNum = parseInt(item.dataset.track);
+                playAudio();
+            }
+        });
+    });
 
     // playListContainer.addEventListener('click', (e) =>{
     //             e.preventDefault()

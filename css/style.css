@@ -197,11 +197,11 @@ body {
   position: relative;
   margin-right: 7px;
   font-size: 12px;
-  padding: 3px;
+  padding: 3px 5px 0 5px;
   border: none;
   outline: none;
   /*background-color: transparent;*/
-  padding-right: 5px;
+  /*padding-right: 5px;*/
   background: rgba(0,0,0,0.5);
   border-radius: 50%;
   margin-left: 10px;
