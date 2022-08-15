@@ -644,6 +644,7 @@ const playItems = playListContainer.querySelectorAll('.play-item');
             } else {
                 isPlay = false;
                 currentTime = 0;
+                // audio.currentTime = 0;
                 playNum = parseInt(item.dataset.track);
                 playAudio();
             }
@@ -696,15 +697,31 @@ function updateTimePlayerElapsed() {
     if( audio.currentTime === audio.duration){
         playNum < playList.length - 1 ? playNum++ : playNum=0;
         isPlay = false;
-        playAudio();
+        currentTime = 0;
+        audio.currentTime = 0;
+        setTimeout(() => {
+            playAudio();
+        }, 1000);
+
     }
 }
 
 function scrub(e) {
-    const scrubTime = (e.offsetX / playerTimeline.offsetWidth) * audio.duration;
-    audio.currentTime = scrubTime;
-    currentTime = scrubTime;
-    console.log(audio.currentTime);
+
+    // console.log(audio.duration)
+
+    // console.log(!NaN)
+
+    if (!audio.duration){
+        alert('Выберите трек!');
+    } else{
+        const scrubTime = (e.offsetX / playerTimeline.offsetWidth) * audio.duration;
+        audio.currentTime = scrubTime;
+        currentTime = scrubTime;
+    }
+
+
+    // console.log(audio.currentTime);
 }
 
 audio.addEventListener('timeupdate', updateTimePlayerElapsed);
