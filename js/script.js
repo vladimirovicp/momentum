@@ -288,7 +288,8 @@ let randomNum = getRandomNum();
 
 function setBg() {
     const img = new Image();
-    img.src = "https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay + "/" + randomNum.toString().padStart(2, '0') + ".jpg";
+    // img.src = "https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/" + timeOfDay + "/" + randomNum.toString().padStart(2, '0') + ".jpg";
+    img.src = "https://vladimirovicp.github.io/momentum/assets/images/" + timeOfDay + "/" + randomNum.toString().padStart(2, '0') + ".webp";
     img.onload = () => {
         body.style.backgroundImage = body.style.backgroundImage = "url('" + img.src + "')";
     };
@@ -533,6 +534,8 @@ const playerCurrent = player.querySelector(".player-current");
 const playerLength = player.querySelector(".player-length");
 
 const progressBar = player.querySelector('.player-progress');
+
+const playerName = player.querySelector('.player-name');
 let currentTime = 0;
 
 function playAudio() {
@@ -548,18 +551,33 @@ function playAudio() {
         let elements = playListContainer.querySelectorAll('li');
         for (let elem of elements) {
             elem.classList.remove('item-active');
+
+            const elemIconUse = elem.querySelectorAll('.playback-icons use');
+
+            elemIconUse[0].classList.remove('hidden');
+            elemIconUse[1].classList.add('hidden');
         }
         elements[playNum].classList.add('item-active');
 
+        const elemTruIconUse = elements[playNum].querySelectorAll('.playback-icons use');
+        elemTruIconUse[0].classList.add('hidden');
+        elemTruIconUse[1].classList.remove('hidden');
+
         // playerCurrent.textContent = audio.currentTime;
         playerLength.textContent = playList[playNum].duration;
-
+        playerName.textContent =  playList[playNum].title;
 
     } else{
         isPlay = false;
         currentTime = audio.currentTime;
         audio.pause();
         playBtn.classList.remove("pause");
+
+    //    playNum
+        let elements = playListContainer.querySelectorAll('li');
+        const elemTruIconUse = elements[playNum].querySelectorAll('.playback-icons use');
+        elemTruIconUse[0].classList.remove('hidden');
+        elemTruIconUse[1].classList.add('hidden');
 
     }
 
@@ -589,9 +607,59 @@ playNextBtn.addEventListener('click', playNext);
     playList.forEach(el => {
         const li = document.createElement('li');
         li.classList.add('play-item');
-        li.textContent = el.title;
+        li.setAttribute('data-track', el.track);
+
+
+        // li.textContent = el.title;
+        li.innerHTML = el.title +
+            `        <button class="player__button toggle" title="Toggle Play">
+                        <svg class="playback-icons">
+                            <use href="#play-icon"></use>
+                            <use class="hidden" href="#pause"></use>
+                        </svg>
+                    </button>
+            `;
         playListContainer.append(li);
-    })
+    });
+
+
+
+
+
+
+
+const playItems = playListContainer.querySelectorAll('.play-item');
+
+    playItems.forEach( playItem => {
+        // console.log(playItem);
+        playItem.addEventListener('click', (e) =>{
+
+            // console.log('123')
+            e.preventDefault()
+            let item = e.target.closest('.play-item')
+            // console.log(item.dataset.track);
+
+            if( playNum === parseInt(item.dataset.track)){
+                playAudio();
+            } else {
+                isPlay = false;
+                currentTime = 0;
+                // audio.currentTime = 0;
+                playNum = parseInt(item.dataset.track);
+                playAudio();
+            }
+        });
+    });
+
+    // playListContainer.addEventListener('click', (e) =>{
+    //             e.preventDefault()
+    //             let item = e.target.closest('.play-item')
+    //             console.log(item.dataset.id)
+    // });
+
+
+
+
 
 
 // обрабатываем прогресс
@@ -629,15 +697,31 @@ function updateTimePlayerElapsed() {
     if( audio.currentTime === audio.duration){
         playNum < playList.length - 1 ? playNum++ : playNum=0;
         isPlay = false;
-        playAudio();
+        currentTime = 0;
+        audio.currentTime = 0;
+        setTimeout(() => {
+            playAudio();
+        }, 1000);
+
     }
 }
 
 function scrub(e) {
-    const scrubTime = (e.offsetX / playerTimeline.offsetWidth) * audio.duration;
-    audio.currentTime = scrubTime;
-    currentTime = scrubTime;
-    console.log(audio.currentTime);
+
+    // console.log(audio.duration)
+
+    // console.log(!NaN)
+
+    if (!audio.duration){
+        alert('Выберите трек!');
+    } else{
+        const scrubTime = (e.offsetX / playerTimeline.offsetWidth) * audio.duration;
+        audio.currentTime = scrubTime;
+        currentTime = scrubTime;
+    }
+
+
+    // console.log(audio.currentTime);
 }
 
 audio.addEventListener('timeupdate', updateTimePlayerElapsed);
