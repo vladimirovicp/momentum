@@ -551,19 +551,33 @@ function playAudio() {
         let elements = playListContainer.querySelectorAll('li');
         for (let elem of elements) {
             elem.classList.remove('item-active');
+
+            const elemIconUse = elem.querySelectorAll('.playback-icons use');
+
+            elemIconUse[0].classList.remove('hidden');
+            elemIconUse[1].classList.add('hidden');
         }
         elements[playNum].classList.add('item-active');
+
+        const elemTruIconUse = elements[playNum].querySelectorAll('.playback-icons use');
+        elemTruIconUse[0].classList.add('hidden');
+        elemTruIconUse[1].classList.remove('hidden');
 
         // playerCurrent.textContent = audio.currentTime;
         playerLength.textContent = playList[playNum].duration;
         playerName.textContent =  playList[playNum].title;
-
 
     } else{
         isPlay = false;
         currentTime = audio.currentTime;
         audio.pause();
         playBtn.classList.remove("pause");
+
+    //    playNum
+        let elements = playListContainer.querySelectorAll('li');
+        const elemTruIconUse = elements[playNum].querySelectorAll('.playback-icons use');
+        elemTruIconUse[0].classList.remove('hidden');
+        elemTruIconUse[1].classList.add('hidden');
 
     }
 
@@ -596,15 +610,15 @@ playNextBtn.addEventListener('click', playNext);
         li.setAttribute('data-track', el.track);
 
 
-        li.textContent = el.title;
-        // li.innerHTML = el.title +
-        //     `        <button class="player__button toggle" title="Toggle Play">
-        //                 <svg class="playback-icons">
-        //                     <use href="#play-icon"></use>
-        //                     <use class="hidden" href="#pause"></use>
-        //                 </svg>
-        //             </button>
-        //     `;
+        // li.textContent = el.title;
+        li.innerHTML = el.title +
+            `        <button class="player__button toggle" title="Toggle Play">
+                        <svg class="playback-icons">
+                            <use href="#play-icon"></use>
+                            <use class="hidden" href="#pause"></use>
+                        </svg>
+                    </button>
+            `;
         playListContainer.append(li);
     });
 
@@ -612,11 +626,15 @@ playNextBtn.addEventListener('click', playNext);
 
 
 
-    const playItems = playListContainer.querySelectorAll('.play-item');
 
+
+const playItems = playListContainer.querySelectorAll('.play-item');
 
     playItems.forEach( playItem => {
+        // console.log(playItem);
         playItem.addEventListener('click', (e) =>{
+
+            // console.log('123')
             e.preventDefault()
             let item = e.target.closest('.play-item')
             // console.log(item.dataset.track);
