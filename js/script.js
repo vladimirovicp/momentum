@@ -486,7 +486,7 @@ let count = Math.floor(Math.random() * (max - min)) + min;
 let maxCount = 0;
 
 async function getQuotes(lang) {
-    const quotes = lang === 'ru' ? 'https://vladimirovicp.github.io/momentum/assets/json/quotes.json' : 'https://type.fit/api/quotes';
+    const quotes = lang === 'ru' ? './assets/json/quotes.json' : 'https://type.fit/api/quotes';
     const res = await fetch(quotes);
     return await res.json();
 }
