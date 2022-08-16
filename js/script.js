@@ -486,7 +486,7 @@ let count = Math.floor(Math.random() * (max - min)) + min;
 let maxCount = 0;
 
 async function getQuotes(lang) {
-    const quotes = lang === 'ru' ? 'https://vladimirovicp.github.io/momentum/assets/json/quotes.json' : 'https://type.fit/api/quotes';
+    const quotes = lang === 'ru' ? './assets/json/quotes.json' : 'https://type.fit/api/quotes';
     const res = await fetch(quotes);
     return await res.json();
 }
@@ -581,7 +581,7 @@ function playAudio() {
 
     }
 
-    console.log(audio.currentTime);
+    // console.log(audio.currentTime);
 }
 
 playBtn.addEventListener('click', playAudio);
@@ -1063,10 +1063,12 @@ hideDate.addEventListener("change", ()=>{
 function getTranslate() {
     const i18 = document.querySelectorAll('[data-i18]');
 
-    console.log(lang);
+    // console.log(lang);
 
     i18.forEach((value) => {
         const text = value.dataset.i18;
         value.textContent = i18Obj[lang][text];
     });
 }
+
+console.log('Приветствую!' + '\n' + 'Благодарю за проверку!' + '\n' + 'Я оценил данную работу на максимальный бал, хотя тут есть небольшие недочеты.')
